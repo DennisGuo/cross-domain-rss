@@ -1,0 +1,25 @@
+{
+  "name": "cross-domain-rss",
+  "version": "1.0.0",
+  "description": "A cross-domain rss proxy.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DennisGuo/cross-domain-rss.git"
+  },
+  "keywords": [
+    "cross-domain",
+    "rss"
+  ],
+  "author": "guohegnxi.dennis@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DennisGuo/cross-domain-rss/issues"
+  },
+  "homepage": "https://github.com/DennisGuo/cross-domain-rss#readme",
+  "dependencies": {
+    "express": "^4.14.1",
+    "request": "^2.79.0",
+    "xml2js": "^0.4.17"
+  }
+}
