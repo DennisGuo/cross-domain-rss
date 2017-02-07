@@ -142,12 +142,12 @@
 
                 var a = new Date().getTime();
                 $.get(getUrl, function (data) {
-                    console.log(data);
+                    // console.log(data);
                     var rs = JSON.stringify(data, null, 2);
 
-                    console.log(rs);
+                    // console.log(rs);
                     rs = syntaxHighlight(rs);
-                    console.log(rs);
+                    // console.log(rs);
                     res.html(rs).show();
 
                     jok.show();
