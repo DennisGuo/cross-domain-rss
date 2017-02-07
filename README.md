@@ -3,6 +3,9 @@ Build a rss proxy with cross-domain header : `Access-Control-Allow-Origin'. And 
 
 The online site is ： [http://ciyuer.com:7100](http://ciyuer.com:7100)
 
+
+<img src="http://p1.bpimg.com/567571/ed83bd0b3a637b51.png" width="600" alt="the screenshot"/>
+
 ## Usage
 
 - clone the project
