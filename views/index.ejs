@@ -42,6 +42,9 @@
         .key {
             color: red;
         }
+        #result p{
+            padding-top:7px;
+        }
     </style>
 </head>
 </head>
@@ -85,20 +88,20 @@
                             <hr/>
                             <label class="col-sm-2 control-label">Step 1</label>
                             <div class="col-sm-10 input-group ">
-                                <p class="form-control">Convert RSS URL using <code>encodeURIComponent</code> ： <code id="encodedUrl"></code></p>
+                                <p>Convert RSS URL using <code>encodeURIComponent</code> ： <code id="encodedUrl"></code></p>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Step 2</label>
                             <div class="col-sm-10 input-group ">
-                                <p class="form-control">Make a ajax http get request with the url ： <code id="getUrl"></code></p>
+                                <p>Make a ajax http get request with the url ： <code id="getUrl"></code></p>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Step 3</label>
                             <div class="col-sm-10" style="padding:0;">
                                 
-                                <p class="form-control">Get the json response showing below : <code id="time"></code></p>   
+                                <p>Get the json response showing below : <code id="time"></code></p>   
                                                            
                                 <div class="progress" id="progress">
                                     <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
