@@ -4,8 +4,10 @@ var parser = require('xml2js').parseString;
 var app = express();
 var port = 4000;
 
+app.set('view engine', 'ejs');
 app.get('/', function (req, res) {
-    res.send('welcome to cross-domain rss proxy.')
+    // res.send('welcome to cross-domain rss proxy.')
+    res.render('index');
 });
 
 app.get('/proxy/:path', function (req, res) {
@@ -15,6 +17,7 @@ app.get('/proxy/:path', function (req, res) {
 
     if (paramPath) {
         var path = decodeURIComponent(paramPath);
+        var before = new Date().getTime();
         request({
             url: path,
             headers: {
@@ -31,6 +34,8 @@ app.get('/proxy/:path', function (req, res) {
                     explicitArray :false,
                     mergeAttrs :true
                 }, function (err, result) {
+                    var after = new Date().getTime();
+                    log('parse time : ' + (after - before) + ' ms');
                     if (err) {
                         log('parse error : ' + err);
                         res.json(null);

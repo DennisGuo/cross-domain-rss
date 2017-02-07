@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A cross domain rss proxy">
+    <meta name="author" content="guohengxi.dennis@gmail.com">
+    <title>Cross Domin RSS Proxy</title>
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        pre {
+            outline: 1px solid #ccc;
+            padding: 5px;
+            max-height:300px;
+            overflow:auto;
+        }
+        
+        .string {
+            color: green;
+        }
+        
+        .number {
+            color: darkorange;
+        }
+        
+        .boolean {
+            color: blue;
+        }
+        
+        .null {
+            color: magenta;
+        }
+        
+        .key {
+            color: red;
+        }
+    </style>
+</head>
+</head>
+
+<body>
+    <a href="https://github.com/DennisGuo/cross-domain-rss.git" target="_blank">
+        <img style="position: fixed; top: 0; right: 0; border: 0; z-index:9999" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67"
+            alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Cross Domain RSS Proxy</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <!--<li class="active"><a href="#">Home</a></li>-->
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </nav>
+    <div class="container" style="padding-top:50px">
+        <div class="starter-template text-center">
+            <h1>Welcome to Cross Domain RSS Proxy!</h1>
+            <p class="lead">This is a very simple proxy service , which aiming at using ajax to invoke rss service .</p>
+        </div>
+        <div class="panle">
+            <div class="panel-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="url" class="col-sm-2 control-label">RSS URL</label>
+                        <div class="input-group col-sm-10">
+                            <input type="text" class="form-control" id="url" value="https://news.ycombinator.com/rss">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary" id="proxy">访问</button>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="result" style="display:none;">
+                        <div class="form-group">
+                            <hr/>
+                            <label class="col-sm-2 control-label">Step 1</label>
+                            <div class="col-sm-10 input-group ">
+                                <p class="form-control">Convert RSS URL using <code>encodeURIComponent</code> ： <code id="encodedUrl"></code></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Step 2</label>
+                            <div class="col-sm-10 input-group ">
+                                <p class="form-control">Make a http get request with the url ： <code id="getUrl"></code></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Step 3</label>
+                            <div class="col-sm-10" style="padding:0;">
+                                
+                                <p class="form-control">Get the json response showing below : <code id="time"></code></p>   
+                                                           
+                                <div class="progress" id="progress">
+                                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                                </div>                                
+                                <pre id="response" style="display:none;"></pre> 
+                            </div>
+                        </div>
+                        <div class="form-group" id="joking">
+                            <label class="col-sm-2 control-label">Ahaaa</label>
+                            <div class="col-sm-10">
+                                <h2>Life is that easy !</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+    </div>
+    </div>
+    <!-- /.container -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            $('#proxy').click(function () {
+                var url = $('#url').val();
+                var param = encodeURIComponent(url);
+                var getUrl = window.location.href + "proxy/" + param;
+                $('#result').show();
+                $('#encodedUrl').html(param);
+                $('#getUrl').html(getUrl);
+                var prg = $('#progress');
+                var res = $('#response');
+                var jok = $('#joking');
+                res.hide();
+                prg.show();
+                jok.hide();
+
+                var a = new Date().getTime();
+                $.get(getUrl, function (data) {
+                    console.log(data);
+                    var rs = JSON.stringify(data, null, 2);
+
+                    console.log(rs);
+                    rs = syntaxHighlight(rs);
+                    console.log(rs);
+                    res.html(rs).show();
+
+                    jok.show();
+                    prg.hide();
+                    var b = new Date().getTime();
+                    $('#time').html('load time :' + (b - a) + 'ms');
+                    
+                })
+            });
+
+        })
+
+
+        function syntaxHighlight(json) {
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return json.replace(
+                /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+                function (match) {
+                    var cls = 'number';
+                    if (/^"/.test(match)) {
+                        if (/:$/.test(match)) {
+                            cls = 'key';
+                        } else {
+                            cls = 'string';
+                        }
+                    } else if (/true|false/.test(match)) {
+                        cls = 'boolean';
+                    } else if (/null/.test(match)) {
+                        cls = 'null';
+                    }
+                    return '<span class="' + cls + '">' + match + '</span>';
+                });
+        }
+    </script>
+</body>
+
+</html>
